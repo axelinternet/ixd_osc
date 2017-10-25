@@ -12,8 +12,9 @@ float roll;
 float pitch;
 PImage[] imgArr = {img, imgsad};
 int selecta;
+boolean isPlaying;
 
-SoundFile[] soundArr;
+SoundFile[] soundArr = new SoundFile[5];
 SoundFile dunderpatrullen;
 SoundFile hives;
 SoundFile kodaline;
@@ -28,6 +29,7 @@ void setup() {
   selecta = 0;
   imgArr[0] = img;
   imgArr[1] = imgsad;
+  isPlaying = false;
 
   // Load files
 
@@ -36,7 +38,8 @@ void setup() {
   soundArr[2] = new SoundFile(this, "kodaline.wav");
   soundArr[3] = new SoundFile(this, "overwerk.wav");
   soundArr[4] = new SoundFile(this, "ted.wav");
-
+  
+  //soundArr[0].play();
 }
 
 void draw() {
@@ -47,6 +50,11 @@ void draw() {
     fill(255,0,0);
     ellipse(56, 46, 55, 55);
     selecta = 1;
+    soundArr[selecta].play();
+    isPlaying = true;
+    //soundArr[selecta].rate(2);
+    println(soundArr[selecta].sampleRate());
+    
   }
   if (pitch < -40) {
     fill(0,255,0);
@@ -80,5 +88,5 @@ void oscEvent(OscMessage theOscMessage) {
       pitch = theOscMessage.get(0).floatValue(); // get the first osc argument
     }
   }
-  println(roll, pitch);
+  //println(roll, pitch);
 }//<>//
