@@ -2,8 +2,13 @@ import oscP5.*;
 import netP5.*;
 import processing.sound.*;
 
-PImage img;
-PImage imgsad;
+PImage one;
+PImage two;
+PImage three;
+PImage four;
+PImage five;
+PImage end;
+PImage start;
 OscP5 oscP5;
 float accX;
 float accY;
@@ -11,7 +16,7 @@ float accZ;
 float roll;
 float pitch;
 float x;
-PImage[] imgArr = new PImage[5];
+PImage[] imgArr = new PImage[7];
 int selecta;
 Boolean readyToRock;
 
@@ -30,14 +35,21 @@ void setup() {
   no = new SoundFile(this, "no.wav");
   oscP5 = new OscP5(this,12000);
   size(650,1146);
-  img = loadImage("cool_hives_image.png");
-  imgsad = loadImage("sad_hives_image.png");
-  selecta = 0;
-  imgArr[0] = img;
-  imgArr[1] = imgsad;
-  imgArr[2] = img;
-  imgArr[3] = imgsad;
-  imgArr[4] = img;
+  one = loadImage("1a.png");
+  two = loadImage("2a.png");
+  three = loadImage("3a.png");
+  four = loadImage("4a.png");
+  five = loadImage("5a.png");
+  end = loadImage("Sista.png");
+  start = loadImage("0a.png");
+  selecta = 6;
+  imgArr[0] = one;
+  imgArr[1] = two;
+  imgArr[2] = three;
+  imgArr[3] = four;
+  imgArr[4] = five;
+  imgArr[5] = end;
+  imgArr[6] = start;
   // Load files
 
   soundArr[0] = new SoundFile(this, "dunderpatrullen.wav");
@@ -54,35 +66,31 @@ void goToNext(){
   selecta +=1;
   soundArr[selecta].play();
   }
-  else{
+  else if(selecta == 4){ 
    soundArr[selecta].stop();
-   println("KLAR"); 
-   //LÄGG TILL: Show end-screen
+   selecta +=1;
   }
 }
 
 void draw() {
   background(80);
-  image(imgArr[selecta], 0, 0);
+  image(imgArr[selecta], 0, 0, width, height);
   textSize(42);
-  if (pitch < -40 && readyToRock == true) {
+  if (pitch > 0) { 
+    readyToRock = true; 
+  }
+ else if (pitch < -40 && readyToRock == true) {
     yes.play();
     goToNext();
     readyToRock = false;
-  } else if (pitch > 0) { 
-    readyToRock = true; 
-  }
-    if (roll > 90 && readyToRock == true) {
-      println("NEEEEJ");
+  } else if (roll > 90 && readyToRock == true) {
       no.play();
       goToNext();
       readyToRock = false;
-  } else if (pitch > 0) { 
-    readyToRock = true; 
-  }
-  fill(255,0,0);
-  text(str(round(roll)), 100, 300); 
-  text(str(round(pitch)), 100, 500); 
+  } 
+  //fill(255,0,0);
+  //text(str(round(roll)), 100, 300); 
+  //text(str(round(pitch)), 100, 500); 
 }
 
 void oscEvent(OscMessage theOscMessage) {
@@ -103,3 +111,10 @@ void oscEvent(OscMessage theOscMessage) {
   }
   //println(roll, pitch);
 }//<>//
+
+void keyPressed() {
+  if (keyCode == ENTER){
+    selecta = 0;
+soundArr[selecta].play();
+  }
+}
